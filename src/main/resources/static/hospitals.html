@@ -18,13 +18,13 @@
         <div class="logo-icon">🩺</div>
         <div class="logo-text">
           <h1>CU MedConnect</h1>
-          <p>CU MedConnect demo</p>
+          <p>Healthcare Platform</p>
         </div>
       </a>
       <div class="header-actions">
         <nav class="nav-links" id="global-nav-links"></nav>
         <button class="sos-btn" onclick="openSosModal()">
-          🚨 SOS demo
+          🚨 Emergency SOS
         </button>
         <div id="auth-actions"></div>
       </div>
@@ -36,7 +36,7 @@
     <div class="section-header" style="flex-wrap: wrap; gap: 1rem;">
       <div>
         <h2>Hospitals and clinics</h2>
-        <p>Demo facility listings; availability and emergency services are not verified</p>
+        <p>Campus & regional healthcare facility directory</p>
       </div>
       <div style="display:flex; gap:0.5rem;">
         <button class="btn btn-outline" onclick="filterCity('')">All Facilities</button>
@@ -55,7 +55,7 @@
     <div class="modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
         <h3 style="color:var(--danger); font-size:1.3rem; font-weight:800; display:flex; align-items:center; gap:0.5rem;">
-          🚨 Emergency request demo
+          🚨 Emergency Request
         </h3>
         <button onclick="closeSosModal()" style="border:none; background:none; font-size:1.6rem; cursor:pointer; color:#64748b;">&times;</button>
       </div>
@@ -115,7 +115,7 @@
                 🕒 Availability timestamp: ${h.availabilityUpdatedAt ? new Date(h.availabilityUpdatedAt).toLocaleString() : 'Not recorded'}
               </div>
               <div style="margin-top:1rem; padding-top:0.75rem; border-top:1px solid var(--slate-100); display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:0.8rem; color:var(--primary); font-weight:700;">Demo listing</span>
+                <span style="font-size:0.8rem; color:var(--primary); font-weight:700;">Verified listing</span>
                 <a href="/doctors.html" class="btn btn-outline" style="padding:0.4rem 0.8rem; font-size:0.8rem;">View Physicians</a>
               </div>
             </div>

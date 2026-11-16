@@ -18,13 +18,13 @@
         <div class="logo-icon">🩺</div>
         <div class="logo-text">
           <h1>CU MedConnect</h1>
-          <p>CU MedConnect demo</p>
+          <p>Healthcare Platform</p>
         </div>
       </a>
       <div class="header-actions">
         <nav class="nav-links" id="global-nav-links"></nav>
         <button class="sos-btn" onclick="openSosModal()">
-          🚨 SOS demo
+          🚨 Emergency SOS
         </button>
         <div id="auth-actions"></div>
       </div>
@@ -83,7 +83,7 @@
           Add a medical record
         </h3>
         <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem;">
-          Add a demo entry to a patient record:
+          Add an entry to a patient record:
         </p>
         <form onsubmit="handleAppendRecord(event)">
           <div class="form-group">
@@ -110,7 +110,7 @@
             <textarea id="ehr-summary" class="form-control" rows="4" placeholder="Clinical findings, medication dosage, recovery advice..." required></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem;">
-            Save demo record
+            Save medical record
           </button>
         </form>
         <div id="ehr-alert" style="margin-top: 1rem; display: none;"></div>
@@ -122,7 +122,7 @@
           👥 Patient Directory
         </h3>
         <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem;">
-          Sample patient records:
+          Registered patient records:
         </p>
         <div id="patients-list-container" style="max-height: 480px; overflow-y: auto;">
           Loading patients...
@@ -136,7 +136,7 @@
     <div class="modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
         <h3 style="color:var(--danger); font-size:1.3rem; font-weight:800; display:flex; align-items:center; gap:0.5rem;">
-          🚨 Emergency request demo
+          🚨 Emergency Request
         </h3>
         <button onclick="closeSosModal()" style="border:none; background:none; font-size:1.6rem; cursor:pointer; color:#64748b;">&times;</button>
       </div>
