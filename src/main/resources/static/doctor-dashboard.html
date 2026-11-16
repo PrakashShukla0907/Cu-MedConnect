@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physician & Doctor Portal - CU MedConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="header-container">
+      <a href="/index.html" class="logo-area">
+        <div class="logo-icon">🩺</div>
+        <div class="logo-text">
+          <h1>CU MedConnect</h1>
+          <p>CU MedConnect demo</p>
+        </div>
+      </a>
+      <div class="header-actions">
+        <nav class="nav-links" id="global-nav-links"></nav>
+        <button class="sos-btn" onclick="openSosModal()">
+          🚨 SOS demo
+        </button>
+        <div id="auth-actions"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Doctor Dashboard -->
+  <main>
+    <!-- Doctor Profile Banner -->
+    <div class="card" style="margin-bottom: 2rem; background: linear-gradient(to right, #ffffff, #f0fdfa); border-color: #99f6e4;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-doctor" style="margin-bottom: 0.4rem;">Sample doctor profile</span>
+          <h2 id="doctor-name" style="font-size: 1.6rem; font-weight: 800; color: var(--slate-900);">Doctor Portal</h2>
+          <p id="doctor-meta" style="color: #64748b; font-size: 0.9rem; margin-top: 0.2rem;">Loading physician details...</p>
+        </div>
+        <div style="display:flex; gap:0.75rem;">
+          <a href="/hospitals.html" class="btn btn-outline">Campus Facilities</a>
+          <a href="/doctors.html" class="btn btn-outline">Specialist Directory</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scheduled Appointments Table -->
+    <div style="margin-bottom: 3rem;">
+      <div class="section-header">
+        <div>
+          <h2>Appointments</h2>
+          <p>Appointments associated with this sample doctor profile.</p>
+        </div>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Appt ID</th>
+              <th>Patient ID</th>
+              <th>Consultation Time</th>
+              <th>Mode</th>
+              <th>Reason for visit</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="appts-table-body">
+            <tr><td colspan="6">Loading your scheduled consultations...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Two Column: Prescribe EHR & Patient Directory -->
+    <div style="display: grid; grid-template-columns: 1.25fr 1fr; gap: 2rem; align-items: start;">
+      <!-- Append Medical Record Form -->
+      <div class="card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--slate-900);">
+          Add a medical record
+        </h3>
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem;">
+          Add a demo entry to a patient record:
+        </p>
+        <form onsubmit="handleAppendRecord(event)">
+          <div class="form-group">
+            <label>Select Target Patient</label>
+            <select id="ehr-patient" class="form-control" required>
+              <option value="">Loading patients...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Clinical Record Category</label>
+            <select id="ehr-type" class="form-control">
+              <option value="DIAGNOSIS">Clinical Diagnosis</option>
+              <option value="PRESCRIPTION">Prescription & Medication</option>
+              <option value="LAB_TEST">Pathology / Laboratory Test</option>
+              <option value="FOLLOW_UP">Follow-up Clinical Review</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Record Title</label>
+            <input type="text" id="ehr-title" class="form-control" placeholder="e.g. Acute Upper Respiratory Tract Infection" required>
+          </div>
+          <div class="form-group">
+            <label>Medical Summary & Treatment Orders</label>
+            <textarea id="ehr-summary" class="form-control" rows="4" placeholder="Clinical findings, medication dosage, recovery advice..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem;">
+            Save demo record
+          </button>
+        </form>
+        <div id="ehr-alert" style="margin-top: 1rem; display: none;"></div>
+      </div>
+
+      <!-- Registered Patients Directory -->
+      <div class="card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--slate-900);">
+          👥 Patient Directory
+        </h3>
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem;">
+          Sample patient records:
+        </p>
+        <div id="patients-list-container" style="max-height: 480px; overflow-y: auto;">
+          Loading patients...
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Emergency SOS Modal -->
+  <div id="sos-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h3 style="color:var(--danger); font-size:1.3rem; font-weight:800; display:flex; align-items:center; gap:0.5rem;">
+          🚨 Emergency request demo
+        </h3>
+        <button onclick="closeSosModal()" style="border:none; background:none; font-size:1.6rem; cursor:pointer; color:#64748b;">&times;</button>
+      </div>
+      <p style="color:#64748b; font-size:0.875rem; margin-bottom:1.25rem;">
+        This prototype records the request only and does not contact responders. Call 112 for immediate help.
+      </p>
+      <form onsubmit="handleSendSos(event)">
+        <div class="form-group">
+          <label>Patient ID</label>
+          <input type="number" id="sos-patientId" class="form-control" value="1" required>
+        </div>
+        <div class="form-group">
+          <label>Coordinates (Latitude, Longitude)</label>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem;">
+            <input type="number" step="0.000001" id="sos-lat" class="form-control" value="30.768800" required>
+            <input type="number" step="0.000001" id="sos-lng" class="form-control" value="76.575400" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>What happened and where?</label>
+          <textarea id="sos-desc" class="form-control" rows="2" placeholder="Describe emergency and campus block location..." required></textarea>
+        </div>
+        <button type="submit" class="sos-btn" style="width:100%; justify-content:center; padding:0.85rem; font-size:0.95rem;">
+          RECORD SOS REQUEST
+        </button>
+      </form>
+      <div id="sos-result" style="margin-top:1rem; display:none;"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    let currentDoctor = null;
+    let patientsList = [];
+
+    async function initDoctorDashboard() {
+      const session = getSession();
+      if (!session || session.role !== 'doctor') {
+        window.location.href = '/index.html';
+        return;
+      }
+      currentDoctor = session.data;
+      renderHeaderNav('doctor');
+
+      // Populate Doctor Banner
+      document.getElementById('doctor-name').innerText = currentDoctor.fullName;
+      document.getElementById('doctor-meta').innerHTML = `
+        Specialization: <strong>${escapeHtml(currentDoctor.specialization)}</strong> | 
+        Affiliated Facility: <strong>${escapeHtml(currentDoctor.hospitalName)}</strong> | 
+        Physician ID: <strong>#${escapeHtml(currentDoctor.id)}</strong>
+      `;
+
+      await Promise.all([
+        loadDoctorAppointments(),
+        loadPatientsData()
+      ]);
+    }
+
+    async function loadDoctorAppointments() {
+      const tbody = document.getElementById('appts-table-body');
+      try {
+        const res = await fetch('/api/appointments?doctorId=' + currentDoctor.id);
+        if (res.ok) {
+          const list = await res.json();
+          if (list.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem; color:#64748b;">No consultations currently scheduled with your profile.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = list.map(a => `
+            <tr>
+              <td><strong>#${escapeHtml(a.id)}</strong></td>
+              <td>Patient #${escapeHtml(a.patientId)}</td>
+              <td><strong>${new Date(a.appointmentAt).toLocaleString()}</strong></td>
+              <td>
+                <span class="badge ${escapeHtml(a.consultationMode === 'VIDEO' ? 'badge-video' : 'badge-inperson')}">
+                  ${escapeHtml(a.consultationMode === 'VIDEO' ? '📹 Video' : '🏥 In-Person')}
+                </span>
+              </td>
+              <td>${escapeHtml(a.reason)}</td>
+              <td><span style="color:#15803d; font-weight:700;">${escapeHtml(a.status)}</span></td>
+            </tr>
+          `).join('');
+        }
+      } catch(e) {
+        tbody.innerHTML = '<tr><td colspan="6">Error loading appointments.</td></tr>';
+      }
+    }
+
+    async function loadPatientsData() {
+      try {
+        const res = await fetch('/api/patients');
+        if (res.ok) {
+          patientsList = await res.json();
+          const select = document.getElementById('ehr-patient');
+          select.innerHTML = patientsList.map(p => 
+            `<option value="${escapeHtml(p.id)}">${escapeHtml(p.fullName)} (${escapeHtml(p.email)}) - ID #${escapeHtml(p.id)}</option>`
+          ).join('');
+
+          const listContainer = document.getElementById('patients-list-container');
+          listContainer.innerHTML = patientsList.map(p => `
+            <div style="padding:0.75rem; border-bottom:1px solid var(--slate-100); font-size:0.875rem;">
+              <div style="font-weight:700; color:var(--slate-900); display:flex; justify-content:space-between;">
+                <span>${escapeHtml(p.fullName)} (ID #${escapeHtml(p.id)})</span>
+                <span style="color:var(--danger); font-size:0.8rem;">Blood: ${escapeHtml(p.bloodGroup || 'N/A')}</span>
+              </div>
+              <div style="color:#64748b; font-size:0.8rem; margin-top:0.2rem;">
+                📧 ${escapeHtml(p.email)} | 📞 ${escapeHtml(p.phone)}<br>
+                🚨 Emergency Contact: ${escapeHtml(p.emergencyContactName)} (${escapeHtml(p.emergencyContactPhone)})
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    async function handleAppendRecord(e) {
+      e.preventDefault();
+      const patientId = document.getElementById('ehr-patient').value;
+      const body = {
+        recordType: document.getElementById('ehr-type').value,
+        title: document.getElementById('ehr-title').value,
+        summary: document.getElementById('ehr-summary').value,
+        doctorName: currentDoctor.fullName
+      };
+
+      try {
+        const res = await fetch('/api/patients/' + patientId + '/records', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const alertDiv = document.getElementById('ehr-alert');
+        alertDiv.style.display = 'block';
+        if (res.ok) {
+          const data = await res.json();
+          alertDiv.innerHTML = `<div style="background:#dcfce7; color:#15803d; padding:0.9rem; border-radius:8px; font-size:0.875rem;">
+            ✅ <strong>Medical record published to Patient #${escapeHtml(patientId)}'s record!</strong> Record ID: #${escapeHtml(data.id)}
+          </div>`;
+          showToast('Electronic health record saved.');
+          document.getElementById('ehr-title').value = '';
+          document.getElementById('ehr-summary').value = '';
+        } else {
+          alertDiv.innerHTML = `<div style="background:#fee2e2; color:#b91c1c; padding:0.9rem; border-radius:8px; font-size:0.875rem;">
+            ❌ Failed to save medical record.
+          </div>`;
+        }
+      } catch(e) {
+        showToast('Error saving record.');
+      }
+    }
+
+    initDoctorDashboard();
+  </script>
+</body>
+</html>
+
+

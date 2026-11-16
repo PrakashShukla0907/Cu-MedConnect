@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Portal - CU MedConnect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="header-container">
+      <a href="/index.html" class="logo-area">
+        <div class="logo-icon">🩺</div>
+        <div class="logo-text">
+          <h1>CU MedConnect</h1>
+          <p>CU MedConnect demo</p>
+        </div>
+      </a>
+      <div class="header-actions">
+        <nav class="nav-links" id="global-nav-links"></nav>
+        <button class="sos-btn" onclick="openSosModal()">
+          🚨 SOS demo
+        </button>
+        <div id="auth-actions"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Patient Dashboard -->
+  <main>
+    <!-- Welcome Header & Profile Card -->
+    <div class="card" style="margin-bottom: 2rem; background: linear-gradient(to right, #ffffff, #eff6ff); border-color: var(--primary-border);">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-specialty" style="margin-bottom: 0.4rem;">Patient Profile</span>
+          <h2 id="patient-name" style="font-size: 1.6rem; font-weight: 800; color: var(--slate-900);">Patient Dashboard</h2>
+          <p id="patient-contact" style="color: #64748b; font-size: 0.9rem; margin-top: 0.2rem;">Loading profile information...</p>
+        </div>
+        <div style="display:flex; gap:0.75rem;">
+          <a href="/doctors.html" class="btn btn-outline">Browse Specialists</a>
+          <a href="/hospitals.html" class="btn btn-outline">Find Hospitals</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking and Consultations Layout -->
+    <div style="display: grid; grid-template-columns: 1.25fr 1fr; gap: 2rem; align-items: start; margin-bottom: 3rem;">
+      <!-- Consultation Booking Form -->
+      <div class="card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--slate-900);">
+          📅 Schedule a Consultation
+        </h3>
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem;">
+          Choose a doctor, time, and visit type:
+        </p>
+        <form onsubmit="handleBookAppointment(event)">
+          <div class="form-group">
+            <label>Select Specialist</label>
+            <select id="appt-doctor" class="form-control" required>
+              <option value="">Loading doctors...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Appointment Date & Time</label>
+            <input type="datetime-local" id="appt-datetime" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Consultation Mode</label>
+            <select id="appt-mode" class="form-control">
+              <option value="VIDEO">📹 Video consultation</option>
+              <option value="IN_PERSON">🏥 In-Person Clinic Visit</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Reason for visit</label>
+            <textarea id="appt-reason" class="form-control" rows="3" placeholder="Brief reason for visit" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem;">
+            Book appointment
+          </button>
+        </form>
+        <div id="booking-alert" style="margin-top: 1rem; display: none;"></div>
+      </div>
+
+      <!-- Scheduled Appointments List -->
+      <div>
+        <div class="section-header" style="margin-bottom: 1rem;">
+          <div>
+            <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--slate-900);">My Consultations</h3>
+            <p>Your upcoming and past consultation bookings</p>
+          </div>
+        </div>
+        <div id="appointments-container">Loading consultations...</div>
+      </div>
+    </div>
+
+    <!-- Medical Records (EHR) Section -->
+    <div style="margin-top: 2rem;">
+      <div class="section-header">
+        <div>
+          <h2>Medical records</h2>
+          <p>Entries saved to this sample patient record.</p>
+        </div>
+      </div>
+      <div id="ehr-container">Loading health records...</div>
+    </div>
+  </main>
+
+  <!-- Emergency SOS Modal -->
+  <div id="sos-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h3 style="color:var(--danger); font-size:1.3rem; font-weight:800; display:flex; align-items:center; gap:0.5rem;">
+          🚨 Emergency request demo
+        </h3>
+        <button onclick="closeSosModal()" style="border:none; background:none; font-size:1.6rem; cursor:pointer; color:#64748b;">&times;</button>
+      </div>
+      <p style="color:#64748b; font-size:0.875rem; margin-bottom:1.25rem;">
+        This prototype records the request only and does not contact responders. Call 112 for immediate help.
+      </p>
+      <form onsubmit="handleSendSos(event)">
+        <div class="form-group">
+          <label>Patient ID</label>
+          <input type="number" id="sos-patientId" class="form-control" value="1" required>
+        </div>
+        <div class="form-group">
+          <label>Coordinates (Latitude, Longitude)</label>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem;">
+            <input type="number" step="0.000001" id="sos-lat" class="form-control" value="30.768800" required>
+            <input type="number" step="0.000001" id="sos-lng" class="form-control" value="76.575400" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>What happened and where?</label>
+          <textarea id="sos-desc" class="form-control" rows="2" placeholder="Describe emergency and campus block location..." required></textarea>
+        </div>
+        <button type="submit" class="sos-btn" style="width:100%; justify-content:center; padding:0.85rem; font-size:0.95rem;">
+          RECORD SOS REQUEST
+        </button>
+      </form>
+      <div id="sos-result" style="margin-top:1rem; display:none;"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    let currentPatient = null;
+    let doctorsList = [];
+
+    async function initPatientDashboard() {
+      const session = getSession();
+      if (!session || session.role !== 'patient') {
+        window.location.href = '/index.html';
+        return;
+      }
+      currentPatient = session.data;
+      renderHeaderNav('patient');
+
+      // Populate profile card
+      document.getElementById('patient-name').innerText = currentPatient.fullName;
+      document.getElementById('patient-contact').innerHTML = `
+        Patient ID: <strong>#${escapeHtml(currentPatient.id)}</strong> | Email: <strong>${escapeHtml(currentPatient.email)}</strong> | 
+        Phone: <strong>${escapeHtml(currentPatient.phone)}</strong> | Blood Group: <strong style="color:var(--danger);">${escapeHtml(currentPatient.bloodGroup || 'N/A')}</strong> | 
+        Emergency Contact: <strong>${escapeHtml(currentPatient.emergencyContactName)} (${escapeHtml(currentPatient.emergencyContactPhone)})</strong>
+      `;
+
+      // Set default datetime to tomorrow at 10:00 AM
+      const tmrw = new Date(Date.now() + 24 * 3600 * 1000);
+      tmrw.setHours(10, 0, 0, 0);
+      tmrw.setMinutes(tmrw.getMinutes() - tmrw.getTimezoneOffset());
+      document.getElementById('appt-datetime').value = tmrw.toISOString().slice(0, 16);
+
+      // Load doctors, appointments, and EHR
+      await Promise.all([
+        loadDoctorsDropdown(),
+        loadMyAppointments(),
+        loadMyEhr()
+      ]);
+    }
+
+    async function loadDoctorsDropdown() {
+      try {
+        const res = await fetch('/api/doctors');
+        if (res.ok) {
+          doctorsList = await res.json();
+          const select = document.getElementById('appt-doctor');
+          select.innerHTML = doctorsList.map(d => 
+            `<option value="${escapeHtml(d.id)}">${escapeHtml(d.fullName)} (${escapeHtml(d.specialization)}) - ${escapeHtml(d.hospitalName)}</option>`
+          ).join('');
+        }
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    async function loadMyAppointments() {
+      const container = document.getElementById('appointments-container');
+      try {
+        const res = await fetch('/api/appointments?patientId=' + currentPatient.id);
+        if (res.ok) {
+          const appts = await res.json();
+          if (appts.length === 0) {
+            container.innerHTML = '<div class="card" style="color:#64748b;">No scheduled consultations on file yet. Book your first appointment using the form.</div>';
+            return;
+          }
+          container.innerHTML = appts.map(a => `
+            <div class="card" style="margin-bottom: 1rem;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <span class="card-title">${escapeHtml(a.doctorName)}</span>
+                <span class="badge ${escapeHtml(a.consultationMode === 'VIDEO' ? 'badge-video' : 'badge-inperson')}">
+                  ${escapeHtml(a.consultationMode === 'VIDEO' ? '📹 Video' : '🏥 In-Person')}
+                </span>
+              </div>
+              <div class="card-meta">🏥 ${escapeHtml(a.hospitalName)}</div>
+              <div class="card-meta">🕒 <strong>${new Date(a.appointmentAt).toLocaleString()}</strong></div>
+              <div style="font-size:0.85rem; color:#475569; background:var(--slate-50); padding:0.6rem; border-radius:6px; margin-top:0.4rem;">
+                Reason: ${escapeHtml(a.reason)}
+              </div>
+              <div style="margin-top:0.5rem; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.75rem; color:#15803d; font-weight:700;">Status: ${escapeHtml(a.status)}</span>
+                <span style="font-size:0.75rem; color:#94a3b8;">Appointment #${escapeHtml(a.id)}</span>
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch(e) {
+        container.innerHTML = '<div class="card">Error loading appointments.</div>';
+      }
+    }
+
+    async function loadMyEhr() {
+      const container = document.getElementById('ehr-container');
+      try {
+        const res = await fetch('/api/patients/' + currentPatient.id + '/records');
+        if (res.ok) {
+          const records = await res.json();
+          if (records.length === 0) {
+            container.innerHTML = `
+              <div class="card" style="text-align:center; padding:2.5rem 1rem;">
+                <p style="color:#64748b; font-size:1rem;">No electronic health records recorded yet.</p>
+                <p style="color:#94a3b8; font-size:0.85rem; margin-top:0.3rem;">Medical diagnoses and prescriptions will appear here once authored by attending doctors.</p>
+              </div>
+            `;
+            return;
+          }
+          container.innerHTML = records.map(r => `
+            <div class="card" style="margin-bottom: 1.25rem;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <h4 style="font-size:1.15rem; font-weight:700; color:var(--slate-900);">${escapeHtml(r.title)}</h4>
+                <span class="badge badge-specialty">${escapeHtml(r.recordType)}</span>
+              </div>
+              <div class="card-meta">👨‍⚕️ Sample doctor profile: <strong>${escapeHtml(r.doctorName || 'Campus Physician')}</strong></div>
+              <div class="card-meta">📅 Record Date: ${new Date(r.createdAt).toLocaleDateString()} at ${new Date(r.createdAt).toLocaleTimeString()}</div>
+              <div style="margin-top:0.75rem; background:var(--slate-50); padding:1rem; border-radius:8px; font-size:0.9rem; color:var(--slate-800); border:1px solid var(--slate-200);">
+                ${escapeHtml(r.summary)}
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch(e) {
+        container.innerHTML = '<div class="card">Error loading health records.</div>';
+      }
+    }
+
+    async function handleBookAppointment(e) {
+      e.preventDefault();
+      const patientId = currentPatient.id;
+      const doctorId = document.getElementById('appt-doctor').value;
+      const appointmentAt = document.getElementById('appt-datetime').value;
+      const consultationMode = document.getElementById('appt-mode').value;
+      const reason = document.getElementById('appt-reason').value;
+
+      try {
+        const res = await fetch('/api/appointments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ patientId, doctorId, appointmentAt, consultationMode, reason })
+        });
+        const alertDiv = document.getElementById('booking-alert');
+        alertDiv.style.display = 'block';
+        if (res.ok) {
+          const data = await res.json();
+          alertDiv.innerHTML = `<div style="background:#dcfce7; color:#15803d; padding:0.9rem; border-radius:8px; font-size:0.875rem;">
+            ✅ <strong>Consultation Booked!</strong> ID: #${escapeHtml(data.id)}<br>
+            Physician: ${escapeHtml(data.doctorName)} (${escapeHtml(data.hospitalName)})<br>
+            Time: ${new Date(data.appointmentAt).toLocaleString()}
+          </div>`;
+          showToast('Appointment reserved successfully!');
+          loadMyAppointments();
+        } else {
+          const err = await res.json();
+          alertDiv.innerHTML = `<div style="background:#fee2e2; color:#b91c1c; padding:0.9rem; border-radius:8px; font-size:0.875rem;">
+            ❌ ${escapeHtml(err.message || 'Slot occupied. Please select an alternate time.')}
+          </div>`;
+        }
+      } catch(err) {
+        showToast('Error booking appointment.');
+      }
+    }
+
+    initPatientDashboard();
+  </script>
+</body>
+</html>
+
+

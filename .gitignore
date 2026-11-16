@@ -1,0 +1,107 @@
+# ==========================================
+# CU MedConnect - Git Ignore Configuration
+# ==========================================
+
+# ------------------------------------------
+# Maven & Build Artifacts
+# ------------------------------------------
+target/
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ------------------------------------------
+# Node.js & Dependency Directories
+# ------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# ------------------------------------------
+# Runtime Logs & Diagnostics
+# ------------------------------------------
+*.log
+logs/
+hs_err_pid*
+replay_pid*
+
+# ------------------------------------------
+# Environment & Local Secrets
+# ------------------------------------------
+.env
+.env.*
+!.env.example
+*.local
+
+# ------------------------------------------
+# IDE & Code Editor Configurations
+# ------------------------------------------
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.built-jar.properties
+
+# ------------------------------------------
+# Operating System Artifacts
+# ------------------------------------------
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+# ------------------------------------------
+# Temporary & Backup Files
+# ------------------------------------------
+*.tmp
+*.bak
+*.swp
+

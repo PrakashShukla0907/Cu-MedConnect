@@ -1,0 +1,20 @@
+{
+  "name": "cu-medconnect",
+  "version": "1.0.0",
+  "description": "University telemedicine and emergency coordination backend",
+  "main": "run.js",
+  "scripts": {
+    "start": "node run.js",
+    "dev": "node run.js",
+    "build": "node run.js build",
+    "test": "node run.js test"
+  },
+  "keywords": [
+    "spring-boot",
+    "maven",
+    "telemedicine",
+    "emergency-coordination"
+  ],
+  "author": "",
+  "license": "ISC"
+}
